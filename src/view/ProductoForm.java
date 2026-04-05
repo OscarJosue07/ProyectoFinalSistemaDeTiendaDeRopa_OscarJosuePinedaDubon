@@ -84,7 +84,7 @@ public class ProductoForm extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "", "Direccion", "Title 5", "Title 6", "Title 7", "Title 8"
+                "Id", "Nombre", "Marca", "Categoria", "Talla", "Precio", "Entrada", "Salida"
             }
         ));
         tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -203,12 +203,12 @@ public class ProductoForm extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(85, 85, 85));
-        jLabel11.setText("Precio:");
+        jLabel11.setText("Salida:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 540, 80, 20));
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(85, 85, 85));
-        jLabel12.setText("Precio:");
+        jLabel12.setText("Entrada:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 490, 80, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
