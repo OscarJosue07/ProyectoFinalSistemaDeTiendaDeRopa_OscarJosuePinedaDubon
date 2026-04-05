@@ -39,18 +39,18 @@ public class ProductoForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         txtId = new javax.swing.JTextField();
-        txtDireccion = new javax.swing.JTextField();
-        txtApellido = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        txtMarca = new javax.swing.JTextField();
         btnSalir = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        txtTelefono = new javax.swing.JTextField();
+        txtCategoria = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         btnModificar1 = new javax.swing.JButton();
-        txtCorreo = new javax.swing.JTextField();
-        txtDireccion1 = new javax.swing.JTextField();
-        txtDireccion2 = new javax.swing.JTextField();
+        txtTalla = new javax.swing.JTextField();
+        txtSalida = new javax.swing.JTextField();
+        txtEntrada = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -125,8 +125,8 @@ public class ProductoForm extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gestión De Productos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 100, 30));
-        jPanel2.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 630, 30));
-        jPanel2.add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 630, 30));
+        jPanel2.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 630, 30));
+        jPanel2.add(txtMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 630, 30));
 
         btnSalir.setBackground(new java.awt.Color(178, 59, 59));
         btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -160,7 +160,7 @@ public class ProductoForm extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 140, 40));
-        jPanel2.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 630, 30));
+        jPanel2.add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 630, 30));
         jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 630, 30));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -178,9 +178,9 @@ public class ProductoForm extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 490, 140, 40));
-        jPanel2.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
-        jPanel2.add(txtDireccion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 630, 30));
-        jPanel2.add(txtDireccion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 630, 30));
+        jPanel2.add(txtTalla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
+        jPanel2.add(txtSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 630, 30));
+        jPanel2.add(txtEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 630, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 670, 560));
 
@@ -309,14 +309,14 @@ public class ProductoForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblProductos;
-    private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtDireccion;
-    private javax.swing.JTextField txtDireccion1;
-    private javax.swing.JTextField txtDireccion2;
+    private javax.swing.JTextField txtCategoria;
+    private javax.swing.JTextField txtEntrada;
     private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtTelefono;
+    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtSalida;
+    private javax.swing.JTextField txtTalla;
     // End of variables declaration//GEN-END:variables
 }
