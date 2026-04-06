@@ -4,19 +4,61 @@
  */
 package view;
 
+import dao.InventarioDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import model.Inventario;
 /**
  *
  * @author Oscar Josue
  */
 public class InventarioForm extends javax.swing.JFrame {
     
+    String rol;
+    String nombre;
+    
+    Inventario inv = new Inventario();
+    InventarioDAO invDao = new InventarioDAO();
+    DefaultTableModel modelo = new DefaultTableModel();
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InventarioForm.class.getName());
+    
+        private void LimpiarCampos() {
+    txtId.setText("");
+    txtId_Producto.setText("");
+    txtStock_Actual.setText("");
+    txtFecha_Ingreso.setText("");
+    txtDireccion.setText("");
+}
 
-    /**
-     * Creates new form InventarioForm
-     */
-    public InventarioForm() {
-        initComponents();
+        public void ListarInventario() {
+    try {
+        List<Inventario> lista = invDao.ListarInventario(); //
+        DefaultTableModel modelo = (DefaultTableModel) tblInventario.getModel(); 
+        modelo.setRowCount(0); 
+        Object[] ob = new Object[5];
+        for (int i = 0; i < lista.size(); i++) {
+            ob[0] = lista.get(i).getId_inventario();
+            ob[1] = lista.get(i).getId_producto();     
+            ob[2] = lista.get(i).getStock_total();     
+            ob[3] = lista.get(i).getNombre_producto(); // Aquí viaja la FECHA real
+            ob[4] = lista.get(i).getUbicacion();       // Aquí viaja la UBICACIÓN real
+            modelo.addRow(ob);
+        }
+        tblInventario.setModel(modelo);
+    } catch (Exception e) {
+        System.out.println("Error al listar: " + e.toString());
+    }
+}
+        
+    public InventarioForm(String rolRecibido,String nombreRecibido) {
+    initComponents();
+    this.rol = rolRecibido;
+    this.nombre = nombreRecibido;
+    this.setLocationRelativeTo(null);
+    ListarInventario();
     }
 
     /**
@@ -28,21 +70,274 @@ public class InventarioForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        txtBuscar = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblInventario = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        txtId = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
+        txtStock_Actual = new javax.swing.JTextField();
+        btnSalir = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        txtFecha_Ingreso = new javax.swing.JTextField();
+        txtId_Producto = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        btnModificar1 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
+        jPanel1.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 144, -1));
+
+        tblInventario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Id_Producto", "Stock_Actual", "Fecha_Ingreso", "Direccion"
+            }
+        ));
+        tblInventario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInventarioMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblInventario);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 550, 470));
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel6.setText("Buscar:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 70, -1));
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel2.setText("Id_Producto:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 240, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel1.setText("Stock_Actual:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 290, 110, -1));
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel4.setText("Direccion:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 390, 80, -1));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gestión De Inventario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 100, 30));
+        jPanel2.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
+        jPanel2.add(txtStock_Actual, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 630, 30));
+
+        btnSalir.setBackground(new java.awt.Color(178, 59, 59));
+        btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 140, 40));
+
+        btnEliminar.setBackground(new java.awt.Color(234, 234, 234));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(51, 51, 51));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 150, 40));
+
+        btnGuardar.setBackground(new java.awt.Color(44, 44, 44));
+        btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("GUARDAR");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 140, 40));
+        jPanel2.add(txtFecha_Ingreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 630, 30));
+        jPanel2.add(txtId_Producto, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 630, 30));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(44, 44, 44));
+        jLabel9.setText("ELEGANCE STORE");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 210, -1));
+
+        btnModificar1.setBackground(new java.awt.Color(234, 234, 234));
+        btnModificar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnModificar1.setForeground(new java.awt.Color(51, 51, 51));
+        btnModificar1.setText("MODIFICAR");
+        btnModificar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 140, 40));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 100, 670, 410));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
+        jLabel7.setText("jLabel4");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 120, 70));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/logo_elegance_store_300x125.png"))); // NOI18N
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 360, 260));
+
+        jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel10.setText("Id:");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 190, 70, -1));
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel5.setText("Fecha_Ingreso:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 120, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1114, Short.MAX_VALUE)
+            .addGap(0, 1610, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1610, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 615, Short.MAX_VALUE)
+            .addGap(0, 920, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+DefaultTableModel modelo = (DefaultTableModel) tblInventario.getModel();
+    TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(modelo);
+    tblInventario.setRowSorter(tr);
+    tr.setRowFilter(javax.swing.RowFilter.regexFilter(txtBuscar.getText()));
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void tblInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInventarioMouseClicked
+int fila = tblInventario.getSelectedRow();
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(null, "No seleccionó fila");
+    } else {
+        // Ajustamos los índices [0, 1, 2, 3, 4] según el orden visual de tu tabla
+        txtId.setText(tblInventario.getValueAt(fila, 0).toString());            // Columna Id
+        txtId_Producto.setText(tblInventario.getValueAt(fila, 1).toString());   // Columna Id_Producto
+        txtStock_Actual.setText(tblInventario.getValueAt(fila, 2).toString());  // Columna Stock_Actual
+        txtFecha_Ingreso.setText(tblInventario.getValueAt(fila, 3).toString()); // Columna Fecha_Ingreso
+        txtDireccion.setText(tblInventario.getValueAt(fila, 4).toString());     // Columna Direccion
+    }
+    }//GEN-LAST:event_tblInventarioMouseClicked
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+    MenuPrincipal menu = new MenuPrincipal(this.rol, this.nombre);
+    
+    // 2. Configuramos la ventana del Menú
+    menu.setVisible(true);
+    menu.setLocationRelativeTo(null); // Para que salga centrado
+    
+    // 3. Cerramos la ventana actual de Productos
+    this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+if (!txtId.getText().isEmpty()) {
+        int pregunta = JOptionPane.showConfirmDialog(null, "¿Eliminar este registro?");
+        if (pregunta == 0) {
+            int id = Integer.parseInt(txtId.getText());
+            invDao.EliminarInventario(id);
+            ListarInventario();
+            LimpiarCampos();
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Selecciona una fila de la tabla");
+    }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+
+if (!txtId_Producto.getText().isEmpty() && !txtStock_Actual.getText().isEmpty()) {
+        inv.setId_producto(Integer.parseInt(txtId_Producto.getText()));
+        inv.setStock_total(Integer.parseInt(txtStock_Actual.getText()));
+        inv.setNombre_producto(txtFecha_Ingreso.getText()); // Usamos este para la fecha
+        inv.setUbicacion(txtDireccion.getText());
+
+        if (invDao.RegistrarInventario(inv)) {
+            JOptionPane.showMessageDialog(null, "¡Guardado en Elegance Store!");
+            ListarInventario();
+            LimpiarCampos();
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Completa el ID Producto y Stock");
+    }  
+        
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
+if (!txtId.getText().isEmpty()) {
+        inv.setId_inventario(Integer.parseInt(txtId.getText()));
+        inv.setId_producto(Integer.parseInt(txtId_Producto.getText()));
+        inv.setStock_total(Integer.parseInt(txtStock_Actual.getText()));
+        inv.setNombre_producto(txtFecha_Ingreso.getText());
+        inv.setUbicacion(txtDireccion.getText());
+
+        if (invDao.ModificarInventario(inv)) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado");
+            ListarInventario();
+            LimpiarCampos();
+        }
+    }
+
+    }//GEN-LAST:event_btnModificar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -64,11 +359,31 @@ public class InventarioForm extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InventarioForm().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnModificar1;
+    private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblInventario;
+    private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtFecha_Ingreso;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtId_Producto;
+    private javax.swing.JTextField txtStock_Actual;
     // End of variables declaration//GEN-END:variables
 }

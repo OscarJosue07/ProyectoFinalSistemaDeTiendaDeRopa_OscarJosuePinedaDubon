@@ -101,6 +101,11 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
         btnInventario.setForeground(new java.awt.Color(255, 255, 255));
         btnInventario.setText("INVENTARIO");
         btnInventario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventarioActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 550, 210, 40));
 
         btnUsuarios.setBackground(new java.awt.Color(31, 31, 31));
@@ -158,6 +163,19 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     // 4. Cerramos (o escondemos) el Menú para que no se amontonen las ventanas
     this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btnProductosActionPerformed
+
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+    InventarioForm invForm = new InventarioForm(this.rol, this.nombre);
+    
+    // 2. Lo hacemos visible
+    invForm.setVisible(true);
+    
+    // 3. Lo centramos en la pantalla
+    invForm.setLocationRelativeTo(null);
+    
+    // 4. Cerramos (o escondemos) el Menú para que no se amontonen las ventanas
+    this.dispose(); 
+    }//GEN-LAST:event_btnInventarioActionPerformed
 
     /**
      * @param args the command line arguments
