@@ -4,19 +4,72 @@
  */
 package view;
 
+import java.sql.Connection;          // Para establecer la conexión
+import java.sql.PreparedStatement;   // Para ejecutar las consultas SQL
+import java.sql.ResultSet;           // Para recibir datos de la base de datos (al listar)
+import java.sql.SQLException;        // Para manejar errores de SQL
+import java.util.ArrayList;          // Para guardar la lista de productos
+import java.util.List;               // Para el método de ListarProductos
+import model.Producto;               // Tu clase modelo que acabas de crear
+import db.Conexion;
+import javax.swing.JOptionPane;
+import dao.ProductoDAO;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Oscar Josue
  */
 public class ProductoForm extends javax.swing.JFrame {
     
+    ProductoDAO proDao = new ProductoDAO();
+    String rol;
+    String nombre;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoForm.class.getName());
 
+    private void LimpiarCampos() {
+    txtId.setText("");
+    txtNombre.setText("");
+    txtMarca.setText("");
+    txtCategoria.setText("");
+    txtTalla.setText("");
+    txtPrecio.setText("");
+    txtEntrada.setText("");
+    txtSalida.setText("");
+}
+    
+    public void ListarProductos() {
+    List<Producto> ListarPro = proDao.ListarProductos();
+    DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+    
+    // Limpiar la tabla antes de cargar los nuevos datos
+    modelo.setRowCount(0); 
+    
+    Object[] ob = new Object[8]; // Son 8 columnas
+    for (int i = 0; i < ListarPro.size(); i++) {
+        ob[0] = ListarPro.get(i).getId();
+        ob[1] = ListarPro.get(i).getNombre();
+        ob[2] = ListarPro.get(i).getMarca();
+        ob[3] = ListarPro.get(i).getCategoria();
+        ob[4] = ListarPro.get(i).getTalla();
+        ob[5] = ListarPro.get(i).getPrecio();
+        ob[6] = ListarPro.get(i).getEntrada();
+        ob[7] = ListarPro.get(i).getSalida();
+        modelo.addRow(ob);
+    }
+    tblProductos.setModel(modelo);
+}
+    
     /**
      * Creates new form ProductoForm
      */
-    public ProductoForm() {
-        initComponents();
+    public ProductoForm(String rolRecibido, String nombreRecibido) {
+    initComponents();
+    this.rol = rolRecibido;
+    this.nombre = nombreRecibido;
+    this.setLocationRelativeTo(null);
+    ListarProductos();
     }
 
     /**
@@ -51,14 +104,15 @@ public class ProductoForm extends javax.swing.JFrame {
         txtTalla = new javax.swing.JTextField();
         txtSalida = new javax.swing.JTextField();
         txtEntrada = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GESTION DE PRODUCTOS");
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -94,7 +148,7 @@ public class ProductoForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblProductos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 550, 470));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 550, 570));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(85, 85, 85));
@@ -184,13 +238,6 @@ public class ProductoForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 670, 560));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
-        jLabel7.setText("jLabel4");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 120, 70));
-
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/logo_elegance_store_300x125.png"))); // NOI18N
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 580, 360, 200));
-
         jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(85, 85, 85));
         jLabel10.setText("Id:");
@@ -211,25 +258,31 @@ public class ProductoForm extends javax.swing.JFrame {
         jLabel12.setText("Entrada:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 490, 80, 20));
 
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
+        jLabel8.setText("jLabel4");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 120, 70));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
+        jLabel7.setText("jLabel4");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 660, 120, 70));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1610, Short.MAX_VALUE)
+            .addGap(0, 1622, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1610, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 6, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
+            .addGap(0, 926, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 6, Short.MAX_VALUE)))
         );
 
         pack();
@@ -240,27 +293,144 @@ public class ProductoForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
-       
+// 1. Obtenemos lo que el usuario escribió
+    String texto = txtBuscar.getText();
+    
+    // 2. Llamamos al DAO para que nos traiga la lista filtrada
+    List<Producto> lista = proDao.BuscarProducto(texto);
+    
+    // 3. Llenamos la tabla con esa nueva lista
+    DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+    modelo.setRowCount(0);
+    Object[] ob = new Object[8];
+    for (int i = 0; i < lista.size(); i++) {
+        ob[0] = lista.get(i).getId();
+        ob[1] = lista.get(i).getNombre();
+        ob[2] = lista.get(i).getMarca();
+        ob[3] = lista.get(i).getCategoria();
+        ob[4] = lista.get(i).getTalla();
+        ob[5] = lista.get(i).getPrecio();
+        ob[6] = lista.get(i).getEntrada();
+        ob[7] = lista.get(i).getSalida();
+        modelo.addRow(ob);
+    }       
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMouseClicked
+// 1. Identificar qué fila se tocó
+    int fila = tblProductos.rowAtPoint(evt.getPoint());
 
+    // 2. Pasar los datos de la tabla a los JTextFields
+    txtId.setText(tblProductos.getValueAt(fila, 0).toString());
+    txtNombre.setText(tblProductos.getValueAt(fila, 1).toString());
+    txtMarca.setText(tblProductos.getValueAt(fila, 2).toString());
+    txtCategoria.setText(tblProductos.getValueAt(fila, 3).toString());
+    txtTalla.setText(tblProductos.getValueAt(fila, 4).toString());
+    txtPrecio.setText(tblProductos.getValueAt(fila, 5).toString());
+    txtEntrada.setText(tblProductos.getValueAt(fila, 6).toString());
+    txtSalida.setText(tblProductos.getValueAt(fila, 7).toString());
     }//GEN-LAST:event_tblProductosMouseClicked
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-
+// 1. Creamos la instancia del Menú Principal
+    // Le pasamos las variables que este formulario ya tiene guardadas
+    MenuPrincipal menu = new MenuPrincipal(this.rol, this.nombre);
+    
+    // 2. Configuramos la ventana del Menú
+    menu.setVisible(true);
+    menu.setLocationRelativeTo(null); // Para que salga centrado
+    
+    // 3. Cerramos la ventana actual de Productos
+    this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-  
+if (!txtId.getText().isEmpty()) {
+        // Preguntar al usuario si está seguro
+        int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?");
+        
+        if (pregunta == 0) { // 0 significa "SÍ"
+            int id = Integer.parseInt(txtId.getText());
+            
+            if (proDao.EliminarProducto(id)) {
+                JOptionPane.showMessageDialog(null, "Producto eliminado correctamente");
+                LimpiarCampos();   // Para vaciar los cuadros
+                ListarProductos(); // Para que desaparezca de la tabla de inmediato
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Selecciona un producto de la tabla primero");
+    }  
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+// 1. Primero validamos que los campos básicos no estén vacíos
+    if (!txtNombre.getText().isEmpty() && !txtPrecio.getText().isEmpty()) {
+        
+        try {
+            Producto pro = new Producto();
+            ProductoDAO proDao = new ProductoDAO();
 
+            // 2. Capturamos los textos normales
+            pro.setNombre(txtNombre.getText());
+            pro.setMarca(txtMarca.getText());
+            pro.setCategoria(txtCategoria.getText());
+            pro.setTalla(txtTalla.getText());
+
+        
+            String precioTexto = txtPrecio.getText().replace(",", ".");
+            pro.setPrecio(Double.parseDouble(precioTexto));
+            // ------------------------------------
+
+            // 3. Capturamos los números enteros (Entrada y Salida)
+            pro.setEntrada(Integer.parseInt(txtEntrada.getText()));
+            pro.setSalida(Integer.parseInt(txtSalida.getText()));
+
+            // 4. Mandamos a guardar al DAO
+            if (proDao.registrarProducto(pro)) {
+                JOptionPane.showMessageDialog(null, "¡Producto guardado con éxito!");
+                LimpiarCampos();
+                ListarProductos();
+                
+                // Aquí puedes llamar a un método para limpiar los campos
+            }
+
+        } catch (NumberFormatException e) {
+            // Este error sale si el usuario escribe letras donde van números
+            JOptionPane.showMessageDialog(null, "Error: En Precio, Entrada y Salida solo se permiten números.");
+        }
+        
+    } else {
+        JOptionPane.showMessageDialog(null, "Por favor llena los campos obligatorios.");
+    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
-  
+if (txtId.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Selecciona un producto de la tabla");
+    } else {
+        if (!txtNombre.getText().isEmpty() && !txtPrecio.getText().isEmpty()) {
+            Producto pro = new Producto();
+            
+            // Llenamos el objeto con los datos de los cuadros de texto
+            pro.setId(Integer.parseInt(txtId.getText()));
+            pro.setNombre(txtNombre.getText());
+            pro.setMarca(txtMarca.getText());
+            pro.setCategoria(txtCategoria.getText());
+            pro.setTalla(txtTalla.getText());
+            
+            String precioTexto = txtPrecio.getText().replace(",", ".");
+            pro.setPrecio(Double.parseDouble(precioTexto));
+            pro.setEntrada(Integer.parseInt(txtEntrada.getText()));
+            pro.setSalida(Integer.parseInt(txtSalida.getText()));
+
+            if (proDao.ModificarProducto(pro)) {
+                JOptionPane.showMessageDialog(null, "¡Producto modificado!");
+                LimpiarCampos();
+                ListarProductos(); // Para que se vea el cambio en la tabla
+            }
+        }
+    }  
     }//GEN-LAST:event_btnModificar1ActionPerformed
 
     /**
@@ -283,9 +453,6 @@ public class ProductoForm extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ProductoForm().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

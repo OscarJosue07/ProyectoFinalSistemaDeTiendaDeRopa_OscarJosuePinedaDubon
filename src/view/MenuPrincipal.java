@@ -37,25 +37,30 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton5 = new javax.swing.JButton();
+        btnProductos = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
+        btnClientes = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
+        btnUsuarios = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MENU PRINCIPAL");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton5.setBackground(new java.awt.Color(31, 31, 31));
-        jButton5.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("PRODUCTO");
-        jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, 210, 40));
+        btnProductos.setBackground(new java.awt.Color(31, 31, 31));
+        btnProductos.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnProductos.setForeground(new java.awt.Color(255, 255, 255));
+        btnProductos.setText("PRODUCTO");
+        btnProductos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, 210, 40));
 
         jLabel3.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -67,43 +72,43 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
         jLabel1.setText("MENÚ PRINCIPAL");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 380, 180, -1));
 
-        jButton7.setBackground(new java.awt.Color(31, 31, 31));
-        jButton7.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setText("CERRAR SESIÓN");
-        jButton7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrarSesion.setBackground(new java.awt.Color(31, 31, 31));
+        btnCerrarSesion.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrarSesion.setText("CERRAR SESIÓN");
+        btnCerrarSesion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnCerrarSesionActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 670, 210, 40));
+        getContentPane().add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 670, 210, 40));
 
-        jButton8.setBackground(new java.awt.Color(31, 31, 31));
-        jButton8.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("CLIENTE");
-        jButton8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btnClientes.setBackground(new java.awt.Color(31, 31, 31));
+        btnClientes.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnClientes.setForeground(new java.awt.Color(255, 255, 255));
+        btnClientes.setText("CLIENTE");
+        btnClientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btnClientesActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 430, 210, 40));
+        getContentPane().add(btnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 430, 210, 40));
 
-        jButton9.setBackground(new java.awt.Color(31, 31, 31));
-        jButton9.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setText("INVENTARIO");
-        jButton9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        getContentPane().add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 550, 210, 40));
+        btnInventario.setBackground(new java.awt.Color(31, 31, 31));
+        btnInventario.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnInventario.setForeground(new java.awt.Color(255, 255, 255));
+        btnInventario.setText("INVENTARIO");
+        btnInventario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        getContentPane().add(btnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 550, 210, 40));
 
-        jButton10.setBackground(new java.awt.Color(31, 31, 31));
-        jButton10.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton10.setForeground(new java.awt.Color(255, 255, 255));
-        jButton10.setText("USUARIO");
-        jButton10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 610, 210, 40));
+        btnUsuarios.setBackground(new java.awt.Color(31, 31, 31));
+        btnUsuarios.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnUsuarios.setForeground(new java.awt.Color(255, 255, 255));
+        btnUsuarios.setText("USUARIO");
+        btnUsuarios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        getContentPane().add(btnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 610, 210, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/elegance.jpg"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 0, 1650, -1));
@@ -111,7 +116,7 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
 // PASO CLAVE: Le pasamos el rol y nombre que guardamos en este Menú
     ClienteForm ventanaClientes = new ClienteForm(this.rol, this.nombre); 
     
@@ -119,9 +124,9 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     ventanaClientes.setLocationRelativeTo(null);
     
     this.dispose(); // Cerramos el menú     // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btnClientesActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
 // 1. Preguntar al usuario para evitar cierres accidentales
     int respuesta = javax.swing.JOptionPane.showConfirmDialog(this, 
             "¿Está seguro que desea cerrar la sesión?", 
@@ -137,7 +142,22 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
         // 3. Destruir la ventana actual del Menú
         this.dispose();
     }        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
+    private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
+// 1. Creamos la instancia del formulario de Productos
+    // Pasamos 'this.rol' y 'this.nombre' que ya existen en el Menú
+    ProductoForm proForm = new ProductoForm(this.rol, this.nombre);
+    
+    // 2. Lo hacemos visible
+    proForm.setVisible(true);
+    
+    // 3. Lo centramos en la pantalla
+    proForm.setLocationRelativeTo(null);
+    
+    // 4. Cerramos (o escondemos) el Menú para que no se amontonen las ventanas
+    this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProductosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,11 +184,11 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnClientes;
+    private javax.swing.JButton btnInventario;
+    private javax.swing.JButton btnProductos;
+    private javax.swing.JButton btnUsuarios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
