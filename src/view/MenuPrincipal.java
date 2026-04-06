@@ -24,8 +24,31 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     this.rol = rolRecibido;
     this.nombre = nombreRecibido;
     
-    // Esto pondrá el nombre del usuario en la barra de título de la ventana
-    this.setTitle("ELEGANCE STORE - Bienvenido: " + nombre);
+// Lógica inteligente para el mensaje
+    if (this.rol.equalsIgnoreCase("Admin") || this.rol.equalsIgnoreCase("Administrador")) {
+        // Si es jefe, sale en verde
+        lblRolActual.setText("En línea: Administrador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.GREEN);
+    } else {
+        // Si es trabajador, sale en azul (o el color que prefieras)
+        lblRolActual.setText("En línea: Trabajador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.CYAN); 
+    }
+    
+    restringirPermisos();
+}
+
+private void restringirPermisos() {
+    if (this.rol.equals("Trabajador") || this.rol.equals("Empleado")) {
+        // Deshabilitamos los botones que solo el Admin debe usar
+        btnUsuarios.setEnabled(false); // No puede crear otros usuarios
+        
+        // Si quieres que ni siquiera vea el botón, usa:
+        // btnUsuarios.setVisible(false);
+        
+        // Puedes agregar más botones aquí, por ejemplo:
+        // btnConfiguracion.setEnabled(false);
+    }
 }
 
     /**
@@ -44,6 +67,7 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
         btnClientes = new javax.swing.JButton();
         btnInventario = new javax.swing.JButton();
         btnUsuarios = new javax.swing.JButton();
+        lblRolActual = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -113,7 +137,16 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
         btnUsuarios.setForeground(new java.awt.Color(255, 255, 255));
         btnUsuarios.setText("USUARIO");
         btnUsuarios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuariosActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 610, 210, 40));
+
+        lblRolActual.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblRolActual.setForeground(new java.awt.Color(51, 255, 0));
+        getContentPane().add(lblRolActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 410, 510, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/elegance.jpg"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 0, 1650, -1));
@@ -177,6 +210,20 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     this.dispose(); 
     }//GEN-LAST:event_btnInventarioActionPerformed
 
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+ // 1. Creamos la instancia del formulario de Usuarios
+  UsuarioForm userForm = new UsuarioForm(this.rol, this.nombre);
+
+// 2. Lo hacemos visible
+userForm.setVisible(true);
+
+// 3. Lo centramos en la pantalla
+userForm.setLocationRelativeTo(null);
+
+// 4. (Opcional) Cerramos o minimizamos el menú actual
+ this.dispose();    // TODO add your handling code here:
+    }//GEN-LAST:event_btnUsuariosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -210,5 +257,6 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblRolActual;
     // End of variables declaration//GEN-END:variables
 }
