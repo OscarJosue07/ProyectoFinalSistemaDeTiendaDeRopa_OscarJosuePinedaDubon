@@ -7,6 +7,7 @@ package view;
 import dao.UsuarioDAO;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import model.Usuario;
@@ -35,7 +36,43 @@ DefaultTableModel modelo = new DefaultTableModel();
         this.rol = rolRecibido;
         this.nombre = nombreRecibido;
         this.setLocationRelativeTo(null);
+        
+           
+        if (this.rol.equalsIgnoreCase("Admin") || this.rol.equalsIgnoreCase("Administrador")) {
+        // Si es jefe, sale en verde
+        lblRolActual.setText("En línea: Administrador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.GREEN);
+    } else {
+        // Si es trabajador, sale en azul (o el color que prefieras)
+        lblRolActual.setText("En línea: Trabajador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.CYAN); 
     }
+    
+     restringirPermisos();
+    }
+    
+          private void restringirPermisos() {
+    if (this.rol.equals("Trabajador") || this.rol.equals("Empleado")) {
+    }
+}
+          
+          public void registrarAccion(String accion) {
+    String sql = "INSERT INTO bitacora (usuario, rol, accion) VALUES (?, ?, ?)";
+    db.Conexion dbCon = new db.Conexion(); 
+    
+    try (java.sql.Connection con = dbCon.conectar(); 
+         java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        if (con != null) {
+            ps.setString(1, this.nombre); 
+            ps.setString(2, this.rol);    
+            ps.setString(3, accion);
+            ps.executeUpdate();
+        }
+    } catch (java.sql.SQLException e) {
+        System.out.println("Error en bitácora: " + e.getMessage());
+    }
+}
     
     public void ListarUsuarios() {
     List<Usuario> lista = uDao.ListarUsuarios();
@@ -89,12 +126,16 @@ DefaultTableModel modelo = new DefaultTableModel();
         txtNombre_Completo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         btnModificar1 = new javax.swing.JButton();
+        btnEliminar1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        lblRolActual = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GESTION DE USUARIOS");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -123,6 +164,7 @@ DefaultTableModel modelo = new DefaultTableModel();
                 "Id", "Nombre_Completo", "Username", "Contraseña", "Rol"
             }
         ));
+        tblUsuarios.setSelectionBackground(new java.awt.Color(212, 175, 55));
         tblUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblUsuariosMouseClicked(evt);
@@ -155,6 +197,8 @@ DefaultTableModel modelo = new DefaultTableModel();
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gestión De Usuarios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtId.setEditable(false);
         jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 100, 30));
         jPanel2.add(txtRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
         jPanel2.add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 630, 30));
@@ -168,7 +212,7 @@ DefaultTableModel modelo = new DefaultTableModel();
                 btnSalirActionPerformed(evt);
             }
         });
-        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 140, 40));
+        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 400, 140, 40));
 
         btnEliminar.setBackground(new java.awt.Color(234, 234, 234));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -210,11 +254,22 @@ DefaultTableModel modelo = new DefaultTableModel();
         });
         jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 140, 40));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 100, 670, 410));
+        btnEliminar1.setBackground(new java.awt.Color(234, 234, 234));
+        btnEliminar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminar1.setForeground(new java.awt.Color(51, 51, 51));
+        btnEliminar1.setText("LIMPIAR");
+        btnEliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnEliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 140, 40));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 100, 670, 460));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
         jLabel7.setText("jLabel4");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 120, 70));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 110, 70));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/logo_elegance_store_300x125.png"))); // NOI18N
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 360, 260));
@@ -229,26 +284,11 @@ DefaultTableModel modelo = new DefaultTableModel();
         jLabel5.setText("Contraseña:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 120, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1610, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1610, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        lblRolActual.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblRolActual.setForeground(new java.awt.Color(51, 255, 0));
+        jPanel1.add(lblRolActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 0, 540, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-4, -6, 1620, 920));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -258,10 +298,16 @@ DefaultTableModel modelo = new DefaultTableModel();
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
-        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(modelo);
-        tblUsuarios.setRowSorter(tr);
-        tr.setRowFilter(javax.swing.RowFilter.regexFilter(txtBuscar.getText()));
+      // 1. Obtenemos el modelo de tu tabla actual (ej. Clientes)
+    DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+    
+    // 2. Creamos un ordenador para ese modelo
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+    tblUsuarios.setRowSorter(sorter);
+    
+    // 3. Filtramos usando lo que estás escribiendo en el cuadro de texto
+    // El "i" es para que ignore mayúsculas/minúsculas
+    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + txtBuscar.getText()));
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void tblUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsuariosMouseClicked
@@ -296,6 +342,7 @@ if (!txtId.getText().isEmpty()) {
 } else {
     JOptionPane.showMessageDialog(null, "Selecciona un usuario de la tabla");
 }
+registrarAccion("ELIMINÓ permanentemente al usuario: " + txtUsername.getText());
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -320,6 +367,7 @@ if (!txtUsername.getText().equals("") && !txtContrasena.getText().equals("") && 
 } else {
     JOptionPane.showMessageDialog(null, "Por favor, completa todos los campos obligatorios");
 }
+registrarAccion("Creó un nuevo acceso para el usuario: " + txtUsername.getText());
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
@@ -342,7 +390,16 @@ if (txtId.getText().equals("")) {
         }
     }
 }
+registrarAccion("Actualizó los datos/permisos del usuario: " + txtUsername.getText());
     }//GEN-LAST:event_btnModificar1ActionPerformed
+
+    private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
+    txtId.setText("");
+    txtNombre_Completo.setText("");
+    txtUsername.setText("");
+    txtContrasena.setText("");
+    txtRol.setText("");
+    }//GEN-LAST:event_btnEliminar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,6 +426,7 @@ if (txtId.getText().equals("")) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JButton btnSalir;
@@ -384,6 +442,7 @@ if (txtId.getText().equals("")) {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblRolActual;
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtContrasena;

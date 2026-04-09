@@ -29,7 +29,43 @@ public class ClienteForm extends javax.swing.JFrame {
   this.rol = rolRecibido;
   this.nombre = nombreRecibido;
   this.setLocationRelativeTo(null);
+  
+  // Lógica inteligente para el mensaje
+    if (this.rol.equalsIgnoreCase("Admin") || this.rol.equalsIgnoreCase("Administrador")) {
+        // Si es jefe, sale en verde
+        lblRolActual.setText("En línea: Administrador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.GREEN);
+    } else {
+        // Si es trabajador, sale en azul (o el color que prefieras)
+        lblRolActual.setText("En línea: Trabajador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.CYAN); 
     }
+    
+    restringirPermisos();
+    }
+    
+    public void registrarAccion(String accion) {
+    String sql = "INSERT INTO bitacora (usuario, rol, accion) VALUES (?, ?, ?)";
+    db.Conexion dbCon = new db.Conexion(); 
+    
+    try (java.sql.Connection con = dbCon.conectar(); 
+         java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        if (con != null) {
+            ps.setString(1, this.nombre); // El nombre que recibes en el constructor
+            ps.setString(2, this.rol);    // El rol que recibes en el constructor
+            ps.setString(3, accion);
+            ps.executeUpdate();
+        }
+    } catch (java.sql.SQLException e) {
+        System.out.println("Error en bitácora: " + e.getMessage());
+    }
+}
+    
+    private void restringirPermisos() {
+    if (this.rol.equals("Trabajador") || this.rol.equals("Empleado")) {
+    }
+}
     
 public void mostrarClientes() {
    DefaultTableModel modelo = new DefaultTableModel();
@@ -104,12 +140,14 @@ public void limpiarCampos(){
         txtTelefono = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        btnModificar1 = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         txtCorreo = new javax.swing.JTextField();
+        btnModificar2 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        lblRolActual = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GESTION DE CLIENTES");
@@ -142,6 +180,7 @@ public void limpiarCampos(){
                 "Id", "Nombre", "Telefono", "Direccion"
             }
         ));
+        tblClientes.setSelectionBackground(new java.awt.Color(212, 175, 55));
         tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblClientesMouseClicked(evt);
@@ -179,6 +218,8 @@ public void limpiarCampos(){
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gestión De Clientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtId.setEditable(false);
         jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 100, 30));
         jPanel2.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 630, 30));
         jPanel2.add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 630, 30));
@@ -192,7 +233,7 @@ public void limpiarCampos(){
                 btnSalirActionPerformed(evt);
             }
         });
-        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 380, 140, 40));
+        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 440, 140, 40));
 
         btnEliminar.setBackground(new java.awt.Color(234, 234, 234));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -223,19 +264,30 @@ public void limpiarCampos(){
         jLabel9.setText("ELEGANCE STORE");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 210, -1));
 
-        btnModificar1.setBackground(new java.awt.Color(234, 234, 234));
-        btnModificar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnModificar1.setForeground(new java.awt.Color(51, 51, 51));
-        btnModificar1.setText("MODIFICAR");
-        btnModificar1.addActionListener(new java.awt.event.ActionListener() {
+        btnLimpiar.setBackground(new java.awt.Color(234, 234, 234));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(51, 51, 51));
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificar1ActionPerformed(evt);
+                btnLimpiarActionPerformed(evt);
             }
         });
-        jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 380, 140, 40));
+        jPanel2.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 380, 140, 40));
         jPanel2.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 670, 470));
+        btnModificar2.setBackground(new java.awt.Color(234, 234, 234));
+        btnModificar2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnModificar2.setForeground(new java.awt.Color(51, 51, 51));
+        btnModificar2.setText("MODIFICAR");
+        btnModificar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnModificar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 380, 140, 40));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 670, 490));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
         jLabel7.setText("jLabel4");
@@ -253,6 +305,10 @@ public void limpiarCampos(){
         jLabel5.setForeground(new java.awt.Color(85, 85, 85));
         jLabel5.setText("Telefono:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 340, 80, -1));
+
+        lblRolActual.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblRolActual.setForeground(new java.awt.Color(51, 255, 0));
+        jPanel1.add(lblRolActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 0, 540, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1610, 920));
 
@@ -335,6 +391,8 @@ int fila = tblClientes.getSelectedRow();
         ps.setInt(1, Integer.parseInt(txtId.getText()));
 
         ps.executeUpdate();
+        
+        registrarAccion("Eliminó el registro de: " + txtNombre.getText());
 
         JOptionPane.showMessageDialog(null, "Cliente eliminado");
 
@@ -367,18 +425,18 @@ int fila = tblClientes.getSelectedRow();
         }
 
         // 3. Preparar SQL
-        String sql = "INSERT INTO Cliente (id_cliente, nombre, apellido, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Cliente (nombre, apellido, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
-
-        ps.setInt(1, Integer.parseInt(txtId.getText()));
-        ps.setString(2, txtNombre.getText());
-        ps.setString(3, txtApellido.getText());
-        ps.setString(4, txtTelefono.getText());
-        ps.setString(5, txtCorreo.getText());
-        ps.setString(6, txtDireccion.getText());
+        
+        ps.setString(1, txtNombre.getText());
+        ps.setString(2, txtApellido.getText());
+        ps.setString(3, txtTelefono.getText());
+        ps.setString(4, txtCorreo.getText());
+        ps.setString(5, txtDireccion.getText());
 
         // 4. Ejecutar
         ps.executeUpdate();
+        registrarAccion("Registró un nuevo elemento: " + txtNombre.getText());
         JOptionPane.showMessageDialog(null, "¡Cliente guardado exitosamente!");
 
         // 5. Refrescar y Limpiar
@@ -398,39 +456,66 @@ int fila = tblClientes.getSelectedRow();
     }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+    txtId.setText("");
+    txtNombre.setText("");
+    txtApellido.setText(""); 
+    txtTelefono.setText(""); 
+    txtCorreo.setText(""); 
+    txtDireccion.setText("");
+        
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
+       // 1. Validamos que el ID no esté vacío (porque sin ID no sabemos a quién modificar)
+
+    // 2. Validamos que los campos obligatorios tengan datos
+    if (txtNombre.getText().isEmpty() || txtTelefono.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "⚠️ El nombre y el teléfono son campos obligatorios.");
+        return;
+    }
+
+    Connection con = null;
     try {
-    Connection con = Conexion.conectar();
+        con = Conexion.conectar();
+        
+        // 3. Sentencia SQL para actualizar
+        String sql = "UPDATE Cliente SET nombre=?, apellido=?, telefono=?, correo=?, direccion=? WHERE id_cliente=?";
+        PreparedStatement ps = con.prepareStatement(sql);
 
-    // El SQL tiene 7 signos de interrogación (6 para los datos nuevos y 1 para el WHERE)
-    String sql = "UPDATE Cliente SET id_cliente=?, nombre=?, apellido=?, telefono=?, correo=?, direccion=? WHERE id_cliente=?";
-    PreparedStatement ps = con.prepareStatement(sql);
+        // 4. Pasamos los datos de los JTextField al SQL
+        ps.setString(1, txtNombre.getText());
+        ps.setString(2, txtApellido.getText());
+        ps.setString(3, txtTelefono.getText());
+        ps.setString(4, txtCorreo.getText());
+        ps.setString(5, txtDireccion.getText());
+        ps.setInt(6, Integer.parseInt(txtId.getText())); // El ID para el WHERE
 
-    // Los 6 datos que se van a actualizar
-    ps.setInt(1, Integer.parseInt(txtId.getText()));
-    ps.setString(2, txtNombre.getText());
-    ps.setString(3, txtApellido.getText());
-    ps.setString(4, txtTelefono.getText());
-    ps.setString(5, txtCorreo.getText());
-    ps.setString(6, txtDireccion.getText());
+        // 5. Ejecutamos la actualización
+        int resultado = ps.executeUpdate();
+        
+        registrarAccion("Actualizó los datos de: " + txtNombre.getText());
 
-    // --- EL QUE TE FALTABA: El parámetro número 7 para el WHERE ---
-    ps.setInt(7, Integer.parseInt(txtId.getText())); 
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "✅ ¡Cliente actualizado correctamente!");
+            mostrarClientes(); // Refrescamos la tabla
+            limpiarCampos();   // Limpiamos los cuadros de texto
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo actualizar el cliente.");
+        }
 
-    ps.executeUpdate();
-
-    JOptionPane.showMessageDialog(null, "Cliente actualizado exitosamente");
-
-    mostrarClientes();
-    limpiarCampos();
-    
-    // IMPORTANTE: No olvides cerrar la conexión
-    con.close();
-
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Error al actualizar: " + e.getMessage());
-}
-    }//GEN-LAST:event_btnModificar1ActionPerformed
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+    } finally {
+        // Cerramos conexión
+        try {
+            if (con != null) con.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al cerrar: " + ex.getMessage());
+        }
+    }
+    }//GEN-LAST:event_btnModificar2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -457,7 +542,8 @@ int fila = tblClientes.getSelectedRow();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnModificar1;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnModificar2;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -472,6 +558,7 @@ int fila = tblClientes.getSelectedRow();
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblRolActual;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtBuscar;

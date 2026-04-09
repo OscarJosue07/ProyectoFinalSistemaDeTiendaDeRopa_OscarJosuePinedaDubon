@@ -39,15 +39,18 @@ public MenuPrincipal(String rolRecibido, String nombreRecibido) { // <--- Ahora 
 }
 
 private void restringirPermisos() {
-    if (this.rol.equals("Trabajador") || this.rol.equals("Empleado")) {
-        // Deshabilitamos los botones que solo el Admin debe usar
-        btnUsuarios.setEnabled(false); // No puede crear otros usuarios
+    // Usamos equalsIgnoreCase para evitar errores por mayúsculas/minúsculas
+    if (this.rol.equalsIgnoreCase("Trabajador") || this.rol.equalsIgnoreCase("Empleado")) {
         
-        // Si quieres que ni siquiera vea el botón, usa:
+        // Bloqueamos Reportes (Bitácora)
+        btnReportes.setEnabled(false); 
+        
+        // Bloqueamos Gestión de Usuarios
+        btnUsuarios.setEnabled(false); 
+        
+        // OPCIONAL: Si prefieres que ni siquiera aparezcan los botones:
+        // btnReportes.setVisible(false);
         // btnUsuarios.setVisible(false);
-        
-        // Puedes agregar más botones aquí, por ejemplo:
-        // btnConfiguracion.setEnabled(false);
     }
 }
 
@@ -60,53 +63,33 @@ private void restringirPermisos() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnProductos = new javax.swing.JButton();
+        lblRolActual = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        btnCerrarSesion = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
         btnInventario = new javax.swing.JButton();
+        btnProductos = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
         btnUsuarios = new javax.swing.JButton();
-        lblRolActual = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MENU PRINCIPAL");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnProductos.setBackground(new java.awt.Color(31, 31, 31));
-        btnProductos.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        btnProductos.setForeground(new java.awt.Color(255, 255, 255));
-        btnProductos.setText("PRODUCTO");
-        btnProductos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        btnProductos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProductosActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, 210, 40));
+        lblRolActual.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblRolActual.setForeground(new java.awt.Color(51, 255, 0));
+        getContentPane().add(lblRolActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 510, 30));
+
+        jPanel1.setBackground(new java.awt.Color(0, 31, 107));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MENU PRINCIPAL", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Serif", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("ELEGANCE STORE");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 330, 220, -1));
-
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("MENÚ PRINCIPAL");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 380, 180, -1));
-
-        btnCerrarSesion.setBackground(new java.awt.Color(31, 31, 31));
-        btnCerrarSesion.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
-        btnCerrarSesion.setText("CERRAR SESIÓN");
-        btnCerrarSesion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
-        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarSesionActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 670, 210, 40));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
 
         btnClientes.setBackground(new java.awt.Color(31, 31, 31));
         btnClientes.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
@@ -118,7 +101,7 @@ private void restringirPermisos() {
                 btnClientesActionPerformed(evt);
             }
         });
-        getContentPane().add(btnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 430, 210, 40));
+        jPanel1.add(btnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 210, 40));
 
         btnInventario.setBackground(new java.awt.Color(31, 31, 31));
         btnInventario.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
@@ -130,7 +113,43 @@ private void restringirPermisos() {
                 btnInventarioActionPerformed(evt);
             }
         });
-        getContentPane().add(btnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 550, 210, 40));
+        jPanel1.add(btnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, 210, 40));
+
+        btnProductos.setBackground(new java.awt.Color(31, 31, 31));
+        btnProductos.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnProductos.setForeground(new java.awt.Color(255, 255, 255));
+        btnProductos.setText("PRODUCTO");
+        btnProductos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 210, 40));
+
+        btnReportes.setBackground(new java.awt.Color(31, 31, 31));
+        btnReportes.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnReportes.setForeground(new java.awt.Color(255, 255, 255));
+        btnReportes.setText("REPORTES");
+        btnReportes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 210, 40));
+
+        btnCerrarSesion.setBackground(new java.awt.Color(31, 31, 31));
+        btnCerrarSesion.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrarSesion.setText("CERRAR SESIÓN");
+        btnCerrarSesion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(46, 46, 46)));
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, 210, 40));
 
         btnUsuarios.setBackground(new java.awt.Color(31, 31, 31));
         btnUsuarios.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
@@ -142,19 +161,19 @@ private void restringirPermisos() {
                 btnUsuariosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 610, 210, 40));
+        jPanel1.add(btnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 210, 40));
 
-        lblRolActual.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        lblRolActual.setForeground(new java.awt.Color(51, 255, 0));
-        getContentPane().add(lblRolActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 410, 510, 30));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 510, 480));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/elegance.jpg"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 0, 1650, -1));
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/aelegante.jpeg"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-340, -120, -1, 970));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
+ registrarAccion("El usuario " + this.nombre + " entró a Gestión de Clientes");       
 // PASO CLAVE: Le pasamos el rol y nombre que guardamos en este Menú
     ClienteForm ventanaClientes = new ClienteForm(this.rol, this.nombre); 
     
@@ -183,21 +202,17 @@ private void restringirPermisos() {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
-// 1. Creamos la instancia del formulario de Productos
-    // Pasamos 'this.rol' y 'this.nombre' que ya existen en el Menú
-    ProductoForm proForm = new ProductoForm(this.rol, this.nombre);
+     registrarAccion("El usuario " + this.nombre + " entró a Gestión de Productos");
     
-    // 2. Lo hacemos visible
-    proForm.setVisible(true);
-    
-    // 3. Lo centramos en la pantalla
-    proForm.setLocationRelativeTo(null);
-    
+    ProductoForm pro = new ProductoForm(this.rol, this.nombre);
+    pro.setVisible(true);
+    this.dispose();
     // 4. Cerramos (o escondemos) el Menú para que no se amontonen las ventanas
     this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btnProductosActionPerformed
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+    registrarAccion("El usuario " + this.nombre + " entró a Inventario");
     InventarioForm invForm = new InventarioForm(this.rol, this.nombre);
     
     // 2. Lo hacemos visible
@@ -210,20 +225,46 @@ private void restringirPermisos() {
     this.dispose(); 
     }//GEN-LAST:event_btnInventarioActionPerformed
 
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+    registrarAccion("Consultó el historial de movimientos");
+    
+    ReportesForm repo = new ReportesForm(this.rol, this.nombre);
+    repo.setVisible(true);
+    repo.setLocationRelativeTo(null);
+    this.dispose();
+    }//GEN-LAST:event_btnReportesActionPerformed
+
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
- // 1. Creamos la instancia del formulario de Usuarios
-  UsuarioForm userForm = new UsuarioForm(this.rol, this.nombre);
-
-// 2. Lo hacemos visible
-userForm.setVisible(true);
-
-// 3. Lo centramos en la pantalla
-userForm.setLocationRelativeTo(null);
-
-// 4. (Opcional) Cerramos o minimizamos el menú actual
- this.dispose();    // TODO add your handling code here:
+// 1. Registramos la acción
+    registrarAccion("El usuario " + this.nombre + " entró a Gestión de Usuarios");
+    
+    // 2. Abrimos la ventana de Usuarios (pasando los datos de sesión)
+    UsuarioForm userForm = new UsuarioForm(this.rol, this.nombre);
+    userForm.setVisible(true);
+    userForm.setLocationRelativeTo(null);
+    
+    // 3. Cerramos el menú
+    this.dispose();     
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
+    // MÉTODO PARA LA BITÁCORA (Cópialo y pégalo aquí)
+    public void registrarAccion(String accion) {
+        String sql = "INSERT INTO bitacora (usuario, rol, accion) VALUES (?, ?, ?)";
+        db.Conexion dbCon = new db.Conexion(); 
+        
+        try (java.sql.Connection con = dbCon.conectar(); 
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            if (con != null) {
+                ps.setString(1, this.nombre); // Usa el nombre que ya tiene el Menú
+                ps.setString(2, this.rol);    // Usa el rol que ya tiene el Menú
+                ps.setString(3, accion);
+                ps.executeUpdate();
+            }
+        } catch (java.sql.SQLException e) {
+            System.out.println("Error en bitácora: " + e.getMessage());
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -253,10 +294,11 @@ userForm.setLocationRelativeTo(null);
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnInventario;
     private javax.swing.JButton btnProductos;
+    private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnUsuarios;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblRolActual;
     // End of variables declaration//GEN-END:variables
 }

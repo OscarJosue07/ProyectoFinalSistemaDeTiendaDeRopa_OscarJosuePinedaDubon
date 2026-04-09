@@ -39,6 +39,24 @@ public class ProductoForm extends javax.swing.JFrame {
     txtSalida.setText("");
 }
     
+    public void registrarAccion(String accion) {
+    String sql = "INSERT INTO bitacora (usuario, rol, accion) VALUES (?, ?, ?)";
+    db.Conexion dbCon = new db.Conexion(); 
+    
+    try (java.sql.Connection con = dbCon.conectar(); 
+         java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        if (con != null) {
+            ps.setString(1, this.nombre); // Nombre del usuario logueado
+            ps.setString(2, this.rol);    // Rol del usuario logueado
+            ps.setString(3, accion);
+            ps.executeUpdate();
+        }
+    } catch (java.sql.SQLException e) {
+        System.out.println("Error en bitácora: " + e.getMessage());
+    }
+}
+    
     public void ListarProductos() {
     List<Producto> ListarPro = proDao.ListarProductos();
     DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
@@ -70,7 +88,25 @@ public class ProductoForm extends javax.swing.JFrame {
     this.nombre = nombreRecibido;
     this.setLocationRelativeTo(null);
     ListarProductos();
+    
+       
+        if (this.rol.equalsIgnoreCase("Admin") || this.rol.equalsIgnoreCase("Administrador")) {
+        // Si es jefe, sale en verde
+        lblRolActual.setText("En línea: Administrador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.GREEN);
+    } else {
+        // Si es trabajador, sale en azul (o el color que prefieras)
+        lblRolActual.setText("En línea: Trabajador - " + nombre);
+        lblRolActual.setForeground(java.awt.Color.CYAN); 
     }
+    
+     restringirPermisos();
+    }
+    
+          private void restringirPermisos() {
+    if (this.rol.equals("Trabajador") || this.rol.equals("Empleado")) {
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -95,7 +131,6 @@ public class ProductoForm extends javax.swing.JFrame {
         txtPrecio = new javax.swing.JTextField();
         txtMarca = new javax.swing.JTextField();
         btnSalir = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         txtCategoria = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
@@ -104,12 +139,15 @@ public class ProductoForm extends javax.swing.JFrame {
         txtTalla = new javax.swing.JTextField();
         txtSalida = new javax.swing.JTextField();
         txtEntrada = new javax.swing.JTextField();
+        btnEliminar1 = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        lblRolActual = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GESTION DE PRODUCTOS");
@@ -141,6 +179,7 @@ public class ProductoForm extends javax.swing.JFrame {
                 "Id", "Nombre", "Marca", "Categoria", "Talla", "Precio", "Entrada", "Salida"
             }
         ));
+        tblProductos.setSelectionBackground(new java.awt.Color(212, 175, 55));
         tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblProductosMouseClicked(evt);
@@ -178,6 +217,8 @@ public class ProductoForm extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gestión De Productos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtId.setEditable(false);
         jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 100, 30));
         jPanel2.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 630, 30));
         jPanel2.add(txtMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 630, 30));
@@ -191,18 +232,7 @@ public class ProductoForm extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 490, 140, 40));
-
-        btnEliminar.setBackground(new java.awt.Color(234, 234, 234));
-        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(51, 51, 51));
-        btnEliminar.setText("ELIMINAR");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 490, 150, 40));
+        jPanel2.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, 140, 40));
 
         btnGuardar.setBackground(new java.awt.Color(44, 44, 44));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -213,7 +243,7 @@ public class ProductoForm extends javax.swing.JFrame {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 140, 40));
+        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 140, 40));
         jPanel2.add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 630, 30));
         jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 630, 30));
 
@@ -231,12 +261,34 @@ public class ProductoForm extends javax.swing.JFrame {
                 btnModificar1ActionPerformed(evt);
             }
         });
-        jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 490, 140, 40));
+        jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, 140, 40));
         jPanel2.add(txtTalla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
         jPanel2.add(txtSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 630, 30));
         jPanel2.add(txtEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 630, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 670, 560));
+        btnEliminar1.setBackground(new java.awt.Color(234, 234, 234));
+        btnEliminar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminar1.setForeground(new java.awt.Color(51, 51, 51));
+        btnEliminar1.setText("ELIMINAR");
+        btnEliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnEliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 480, 150, 40));
+
+        btnLimpiar.setBackground(new java.awt.Color(234, 234, 234));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(51, 51, 51));
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 480, 140, 40));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 670, 590));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(85, 85, 85));
@@ -264,7 +316,11 @@ public class ProductoForm extends javax.swing.JFrame {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/mapequeño.png"))); // NOI18N
         jLabel7.setText("jLabel4");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 660, 120, 70));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 680, 120, 70));
+
+        lblRolActual.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblRolActual.setForeground(new java.awt.Color(51, 255, 0));
+        jPanel1.add(lblRolActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 0, 540, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -344,24 +400,16 @@ public class ProductoForm extends javax.swing.JFrame {
     this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-if (!txtId.getText().isEmpty()) {
-        // Preguntar al usuario si está seguro
-        int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?");
-        
-        if (pregunta == 0) { // 0 significa "SÍ"
-            int id = Integer.parseInt(txtId.getText());
-            
-            if (proDao.EliminarProducto(id)) {
-                JOptionPane.showMessageDialog(null, "Producto eliminado correctamente");
-                LimpiarCampos();   // Para vaciar los cuadros
-                ListarProductos(); // Para que desaparezca de la tabla de inmediato
-            }
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Selecciona un producto de la tabla primero");
-    }  
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+    txtId.setText("");
+    txtNombre.setText("");
+    txtMarca.setText("");
+    txtCategoria.setText("");
+    txtTalla.setText("");
+    txtPrecio.setText("");
+    txtEntrada.setText("");
+    txtSalida.setText("");
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 // 1. Primero validamos que los campos básicos no estén vacíos
@@ -403,6 +451,7 @@ if (!txtId.getText().isEmpty()) {
     } else {
         JOptionPane.showMessageDialog(null, "Por favor llena los campos obligatorios.");
     }
+    registrarAccion("Registró un nuevo producto: " + txtNombre.getText());
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
@@ -430,8 +479,38 @@ if (txtId.getText().isEmpty()) {
                 ListarProductos(); // Para que se vea el cambio en la tabla
             }
         }
-    }  
+    }
+registrarAccion("Registró un nuevo producto: " + txtNombre.getText());
     }//GEN-LAST:event_btnModificar1ActionPerformed
+
+    private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
+// 1. Verificamos que haya un ID seleccionado (que el usuario haya tocado la tabla)
+    if (txtId.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "⚠️ Selecciona un producto de la tabla para eliminar.");
+        return;
+    }
+
+    // 2. Pedir confirmación al usuario para evitar borrados accidentales
+    int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+    if (pregunta == JOptionPane.YES_OPTION) {
+        try {
+            int id = Integer.parseInt(txtId.getText());
+
+            // 3. Llamamos al método del DAO
+            if (proDao.EliminarProducto(id)) {
+                JOptionPane.showMessageDialog(null, "✅ Producto eliminado correctamente.");
+                LimpiarCampos();
+                ListarProductos(); // Refrescamos la tabla para que ya no aparezca
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ Error: No se pudo eliminar el producto.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar el ID del producto.");
+        }
+    }  
+    registrarAccion("Eliminó el producto: " + txtNombre.getText());
+    }//GEN-LAST:event_btnEliminar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -456,8 +535,9 @@ if (txtId.getText().isEmpty()) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
@@ -475,6 +555,7 @@ if (txtId.getText().isEmpty()) {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblRolActual;
     private javax.swing.JTable tblProductos;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCategoria;

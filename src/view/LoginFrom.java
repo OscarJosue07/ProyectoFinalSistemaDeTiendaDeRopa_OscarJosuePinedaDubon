@@ -151,7 +151,7 @@ public class LoginFrom extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-String user = txtUsuario.getText();
+    String user = txtUsuario.getText();
     String pass = txtContrasena.getText();
 
     UsuarioDAO dao = new UsuarioDAO();
