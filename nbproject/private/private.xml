@@ -3,19 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/ProductoForm.java</file>
+            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/dao/ProductoDAO.java</file>
+            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/MenuPrincipal.java</file>
+            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/dao/InventarioDAO.java</file>
             <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/InventarioForm.java</file>
             <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/model/Inventario.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/dao/InventarioDAO.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/model/Usuario.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/dao/UsuarioDAO.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/UsuarioForm.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/ClienteForm.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/LoginFrom.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/model/Producto.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/aw.jpeg</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/logo_elegance_store_300x125.png</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/MenuPrincipal.java</file>
-            <file>file:/C:/Users/Oscar%20Josue/Documents/NetBeansProjects/ProyectoFinal_Oscar%20Josue/src/view/aelegante.jpeg</file>
         </group>
     </open-files>
 </project-private>

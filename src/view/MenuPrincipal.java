@@ -204,7 +204,7 @@ private void restringirPermisos() {
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
      registrarAccion("El usuario " + this.nombre + " entró a Gestión de Productos");
     
-    ProductoForm pro = new ProductoForm(this.rol, this.nombre);
+   ProductoForm pro = new ProductoForm(this.rol, this.nombre);
     pro.setVisible(true);
     this.dispose();
     // 4. Cerramos (o escondemos) el Menú para que no se amontonen las ventanas

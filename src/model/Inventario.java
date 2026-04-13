@@ -8,12 +8,14 @@ package model;
  *
  * @author Oscar Josue
  */
+
 public class Inventario {
-private int id_inventario;
+    private int id_inventario;
     private int id_producto;
-    private int stock_total;
-    private String nombre_producto; // Este lo usaremos para la fecha/nombre
-    private String ubicacion;
+    private int cantidad;      // Coincide con columna 'cantidad' en BD
+    private String ubicacion;   // Coincide con columna 'ubicacion' en BD
+    private String tipo;       // Coincide con columna 'Tipo' en BD
+    private String fecha;      // Coincide con columna 'fecha_ingreso' en BD
 
     public Inventario() {}
 
@@ -24,13 +26,15 @@ private int id_inventario;
     public int getId_producto() { return id_producto; }
     public void setId_producto(int id_producto) { this.id_producto = id_producto; }
 
-    public int getStock_total() { return stock_total; }
-    public void setStock_total(int stock_total) { this.stock_total = stock_total; }
-
-    public String getNombre_producto() { return nombre_producto; }
-    public void setNombre_producto(String nombre_producto) { this.nombre_producto = nombre_producto; }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
     public String getUbicacion() { return ubicacion; }
     public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
 
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
+
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 }

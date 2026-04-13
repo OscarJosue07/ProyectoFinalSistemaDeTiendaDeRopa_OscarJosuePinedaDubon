@@ -4,6 +4,7 @@
  */
 package view;
 
+import dao.InventarioDAO;
 import java.sql.Connection;          // Para establecer la conexión
 import java.sql.PreparedStatement;   // Para ejecutar las consultas SQL
 import java.sql.ResultSet;           // Para recibir datos de la base de datos (al listar)
@@ -22,9 +23,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ProductoForm extends javax.swing.JFrame {
     
-    ProductoDAO proDao = new ProductoDAO();
     String rol;
     String nombre;
+    ProductoDAO proDao = new ProductoDAO();
+    InventarioDAO invDao = new InventarioDAO();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoForm.class.getName());
 
@@ -135,7 +137,7 @@ public class ProductoForm extends javax.swing.JFrame {
         txtCategoria = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        btnModificar1 = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         txtTalla = new javax.swing.JTextField();
         txtSalida = new javax.swing.JTextField();
         txtEntrada = new javax.swing.JTextField();
@@ -252,16 +254,16 @@ public class ProductoForm extends javax.swing.JFrame {
         jLabel9.setText("ELEGANCE STORE");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 210, -1));
 
-        btnModificar1.setBackground(new java.awt.Color(234, 234, 234));
-        btnModificar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnModificar1.setForeground(new java.awt.Color(51, 51, 51));
-        btnModificar1.setText("MODIFICAR");
-        btnModificar1.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setBackground(new java.awt.Color(234, 234, 234));
+        btnModificar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(51, 51, 51));
+        btnModificar.setText("MODIFICAR");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificar1ActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
-        jPanel2.add(btnModificar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, 140, 40));
+        jPanel2.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, 140, 40));
         jPanel2.add(txtTalla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 630, 30));
         jPanel2.add(txtSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 630, 30));
         jPanel2.add(txtEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 630, 30));
@@ -412,103 +414,154 @@ public class ProductoForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-// 1. Primero validamos que los campos básicos no estén vacíos
-    if (!txtNombre.getText().isEmpty() && !txtPrecio.getText().isEmpty()) {
+ try {
+    // 1. Capturamos los datos del nuevo producto
+    model.Producto pro = new model.Producto();
+    // Nota: El ID no se setea aquí porque suele ser Autoincrementable en la BD
+    pro.setNombre(txtNombre.getText());
+    pro.setMarca(txtMarca.getText());
+    pro.setCategoria(txtCategoria.getText());
+    pro.setTalla(txtTalla.getText());
+    pro.setPrecio(Double.parseDouble(txtPrecio.getText()));
+    
+    int entrada = Integer.parseInt(txtEntrada.getText());
+    int salida = Integer.parseInt(txtSalida.getText());
+    pro.setEntrada(entrada);
+    pro.setSalida(salida);
+
+    // 2. Ejecutamos el registro en la tabla Producto
+    // Importante: Usamos registrarProducto (o como se llame tu método de insert)
+    if (proDao.registrarProducto(pro)) { 
+
+        // --- LÓGICA DE FILA ÚNICA PARA EL INVENTARIO ---
+        model.Inventario inv = new model.Inventario();
         
-        try {
-            Producto pro = new Producto();
-            ProductoDAO proDao = new ProductoDAO();
-
-            // 2. Capturamos los textos normales
-            pro.setNombre(txtNombre.getText());
-            pro.setMarca(txtMarca.getText());
-            pro.setCategoria(txtCategoria.getText());
-            pro.setTalla(txtTalla.getText());
-
+        // Recuperamos el ID que la base de datos le asignó al nuevo producto
+        // Si tu método registrarProducto no devuelve el ID, asegúrate de obtenerlo
+        int idRecienCreado = proDao.obtenerUltimoId(); 
+        inv.setId_producto(idRecienCreado);
         
-            String precioTexto = txtPrecio.getText().replace(",", ".");
-            pro.setPrecio(Double.parseDouble(precioTexto));
-            // ------------------------------------
+        inv.setUbicacion("BODEGA CENTRAL");
+        
+        // GUARDAMOS LA ENTRADA EN 'CANTIDAD' (Para que se vea el 4)
+        inv.setCantidad(entrada); 
 
-            // 3. Capturamos los números enteros (Entrada y Salida)
-            pro.setEntrada(Integer.parseInt(txtEntrada.getText()));
-            pro.setSalida(Integer.parseInt(txtSalida.getText()));
-
-            // 4. Mandamos a guardar al DAO
-            if (proDao.registrarProducto(pro)) {
-                JOptionPane.showMessageDialog(null, "¡Producto guardado con éxito!");
-                LimpiarCampos();
-                ListarProductos();
-                
-                // Aquí puedes llamar a un método para limpiar los campos
-            }
-
-        } catch (NumberFormatException e) {
-            // Este error sale si el usuario escribe letras donde van números
-            JOptionPane.showMessageDialog(null, "Error: En Precio, Entrada y Salida solo se permiten números.");
+        // EL TIPO SE DEFINE POR EL RESULTADO NETO
+        // Para que al listar podamos hacer la resta (Entrada - Salida)
+        if (entrada >= salida) {
+            inv.setTipo("ENTRADA");
+        } else {
+            inv.setTipo("SALIDA");
         }
         
+        // Registramos UNA SOLA FILA en el historial
+        invDao.RegistrarInventario(inv); 
+        // -----------------------------------------------
+
+        JOptionPane.showMessageDialog(null, "✔️ Producto guardado e Inventario registrado"); 
+        ListarProductos(); 
+        LimpiarCampos();
     } else {
-        JOptionPane.showMessageDialog(null, "Por favor llena los campos obligatorios.");
+        JOptionPane.showMessageDialog(null, "❌ Error al guardar el producto");
     }
-    registrarAccion("Registró un nuevo producto: " + txtNombre.getText());
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Error: Verifique los datos numéricos");
+    System.out.println(e.toString());
+}
+        registrarAccion("Guardo el producto: " + txtNombre.getText());   
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
-if (txtId.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Selecciona un producto de la tabla");
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+if (txtId.getText().equals("")) {
+        JOptionPane.showMessageDialog(null, "Seleccione una fila");
     } else {
-        if (!txtNombre.getText().isEmpty() && !txtPrecio.getText().isEmpty()) {
-            Producto pro = new Producto();
-            
-            // Llenamos el objeto con los datos de los cuadros de texto
-            pro.setId(Integer.parseInt(txtId.getText()));
-            pro.setNombre(txtNombre.getText());
-            pro.setMarca(txtMarca.getText());
-            pro.setCategoria(txtCategoria.getText());
-            pro.setTalla(txtTalla.getText());
-            
-            String precioTexto = txtPrecio.getText().replace(",", ".");
-            pro.setPrecio(Double.parseDouble(precioTexto));
-            pro.setEntrada(Integer.parseInt(txtEntrada.getText()));
-            pro.setSalida(Integer.parseInt(txtSalida.getText()));
+        try {
+            // 2. Definimos las variables que te salían en rojo
+            int id = Integer.parseInt(txtId.getText());
+            String nombre = txtNombre.getText();
+            String marca = txtMarca.getText();
+            String cat = txtCategoria.getText();
+            String talla = txtTalla.getText();
+            double precio = Double.parseDouble(txtPrecio.getText());
+            int entrada = Integer.parseInt(txtEntrada.getText());
+            int salida = Integer.parseInt(txtSalida.getText());
 
-            if (proDao.ModificarProducto(pro)) {
-                JOptionPane.showMessageDialog(null, "¡Producto modificado!");
+            // 3. Llenamos el objeto Producto
+            model.Producto pro = new model.Producto();
+            pro.setId(id);
+            pro.setNombre(nombre);
+            pro.setMarca(marca);
+            pro.setCategoria(cat);
+            pro.setTalla(talla);
+            pro.setPrecio(precio);
+            pro.setEntrada(entrada);
+            pro.setSalida(salida);
+
+            // 4. Ejecutamos la modificación
+            if (proDao.modificarProducto(pro)) {
+                
+                // --- LÓGICA DE FILA ÚNICA PARA EL INVENTARIO ---
+                model.Inventario inv = new model.Inventario();
+                inv.setId_producto(id); // Ya no saldrá en rojo
+                inv.setUbicacion("BODEGA CENTRAL");
+                inv.setCantidad(entrada); 
+
+                if (entrada >= salida) {
+                    inv.setTipo("ENTRADA");
+                } else {
+                    inv.setTipo("SALIDA");
+                }
+
+                // Esto dejará de estar en rojo cuando hagas el paso 2 abajo
+                invDao.ActualizarInventario(inv); 
+                // -----------------------------------------------
+
+                JOptionPane.showMessageDialog(null, "✔️ Producto e Inventario actualizados"); 
+                ListarProductos(); 
                 LimpiarCampos();
-                ListarProductos(); // Para que se vea el cambio en la tabla
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: Verifique los datos");
         }
     }
-registrarAccion("Registró un nuevo producto: " + txtNombre.getText());
-    }//GEN-LAST:event_btnModificar1ActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
-// 1. Verificamos que haya un ID seleccionado (que el usuario haya tocado la tabla)
-    if (txtId.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "⚠️ Selecciona un producto de la tabla para eliminar.");
-        return;
-    }
-
-    // 2. Pedir confirmación al usuario para evitar borrados accidentales
-    int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-    if (pregunta == JOptionPane.YES_OPTION) {
+if (!"".equals(txtId.getText())) {
+    int pregunta = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar este producto y todo su historial de inventario?");
+    
+    if (pregunta == 0) { // 0 significa que el usuario hizo clic en "SÍ"
         try {
             int id = Integer.parseInt(txtId.getText());
 
-            // 3. Llamamos al método del DAO
-            if (proDao.EliminarProducto(id)) {
-                JOptionPane.showMessageDialog(null, "✅ Producto eliminado correctamente.");
-                LimpiarCampos();
-                ListarProductos(); // Refrescamos la tabla para que ya no aparezca
+            // 1. PRIMER PASO: Borrar de la tabla 'inventario'
+            // Esto elimina todos los registros de cantidad y ubicación de este producto
+            if (invDao.EliminarInventarioPorProducto(id)) {
+                
+                // 2. SEGUNDO PASO: Borrar de la tabla 'producto'
+                if (proDao.eliminarProducto(id)) {
+                    JOptionPane.showMessageDialog(null, "✔️ Producto e historial eliminados correctamente");
+                    
+                    // Registro opcional en bitácora si lo usas
+                    // registrarAccion("El usuario " + this.nombre + " eliminó el producto ID: " + id);
+                    
+                    LimpiarCampos();
+                    ListarProductos();
+                } else {
+                    JOptionPane.showMessageDialog(null, "❌ Error al eliminar el producto de la tabla principal");
+                }
+                
             } else {
-                JOptionPane.showMessageDialog(null, "❌ Error: No se pudo eliminar el producto.");
+                JOptionPane.showMessageDialog(null, "❌ No se pudo limpiar el historial del inventario");
             }
+            
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Error al procesar el ID del producto.");
+            JOptionPane.showMessageDialog(null, "Error: El ID no es válido.");
         }
-    }  
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "Seleccione un producto de la tabla para eliminar");
+}
     registrarAccion("Eliminó el producto: " + txtNombre.getText());
     }//GEN-LAST:event_btnEliminar1ActionPerformed
 
@@ -538,7 +591,7 @@ registrarAccion("Registró un nuevo producto: " + txtNombre.getText());
     private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnModificar1;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
